@@ -24,6 +24,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onInfoWindowLongClick(p0: Marker) {
         val point = p0.position
         val name = p0.title
+        presenter.addGP(p0.position,getAddress(p0.position))
 
 
     }
@@ -39,6 +40,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         mMap.addMarker(markerOptions).showInfoWindow()
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +70,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMapClickListener {
-            var marker = MarkerOptions()
+            var marker = MarkerOptions().position(it)
             marker.title(getAddress(it))
             mMap.addMarker(marker)
 

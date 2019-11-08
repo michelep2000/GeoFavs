@@ -1,5 +1,7 @@
 package com.example.geofavs
 
+
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -9,14 +11,37 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback,MapDelegate {
+
+
+
+    override fun drawMarker(gp: LatLng, info: String) {
+        val markerOptions = MarkerOptions().position(gp)
+
+          // add these two lines
+
+
+
+        mMap.addMarker(markerOptions)
+    }
+
 
     private lateinit var mMap: GoogleMap
+    private lateinit var presenter: MapPresenter
+    val geocoder = Geocoder(this)
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+        val db = LocationFactory.get(this)
+        val geocoder = Geocoder(this)
+        presenter = MapPresenter(db,this,geocoder)
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -34,10 +59,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setOnMapClickListener {
+            presenter.addGP(it)
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+
+        }
+
+
     }
+
+
 }

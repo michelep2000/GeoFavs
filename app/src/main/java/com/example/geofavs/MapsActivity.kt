@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnInfoWindowLongClickListener, MapDelegate {
@@ -41,11 +42,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val geocoder = Geocoder(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         val db = LocationFactory.get(this)
-        presenter = MapPresenter(db, this, geocoder)
+        presenter = MapPresenter(db, this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -66,7 +67,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMapClickListener {
-            presenter.addGP(it)
+            var marker = MarkerOptions()
+            marker.title(getAddress(it))
+
+
 
 
         }
@@ -75,5 +79,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     }
 
+    private fun getAddress(latLng: LatLng): String {
+        // 1
+        val geocoder = Geocoder(this, Locale.getDefault())
+
+
+
+        val addresses = geocoder.getFromLocation(
+            latLng.latitude,
+            latLng.longitude,
+            1
+        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        val address = addresses.get(0).getAddressLine(0)
+        return address
+    }
 
 }

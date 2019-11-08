@@ -67,31 +67,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMapClickListener {
-            var marker = MarkerOptions()
+            var marker = MarkerOptions().position(it)
             marker.title(getAddress(it))
             mMap.addMarker(marker)
 
-
-
-
         }
         mMap.setOnInfoWindowLongClickListener(this)
-
-
     }
 
     private fun getAddress(latLng: LatLng): String {
         // 1
         val geocoder = Geocoder(this, Locale.getDefault())
 
-
-
         val addresses = geocoder.getFromLocation(
             latLng.latitude,
             latLng.longitude,
             1
         ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
         val address = addresses.get(0).getAddressLine(0)
         return address
     }

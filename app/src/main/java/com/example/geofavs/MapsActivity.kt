@@ -24,7 +24,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onInfoWindowLongClick(p0: Marker) {
         val point = p0.position
         val name = p0.title
-        presenter.addGP(p0.position,getAddress(p0.position))
+        presenter.addGP(point, name)
 
 
     }
@@ -32,16 +32,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun drawMarker(gp: LatLng, info: String) {
         val markerOptions = MarkerOptions().position(gp)
-        Log.e("pasa2",info)
+        Log.e("pasa2", info)
         markerOptions.title(info)
-
-
-
-
         mMap.addMarker(markerOptions).showInfoWindow()
     }
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

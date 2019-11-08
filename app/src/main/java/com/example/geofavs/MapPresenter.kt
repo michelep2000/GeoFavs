@@ -8,32 +8,29 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class MapPresenter( val db:LocationDB, val view: MapDelegate) {
+class MapPresenter(val db: LocationDB, val view: MapDelegate) {
 
-    fun addGP(point: LatLng,name: String) {
+    fun addGP(point: LatLng, name: String) {
         CoroutineScope(Dispatchers.IO).launch {
 
-            withContext(Dispatchers.Main){
-                db.locationDao().insertLocation(Location(name = name,longitude = point.longitude, latitude = point.latitude))
+            withContext(Dispatchers.Main) {
+                db.locationDao().insertLocation(
+                    Location(
+                        name = name,
+                        longitude = point.longitude,
+                        latitude = point.latitude
+                    )
+                )
             }
 
         }
 
-
-
-
-
-
-
-
-
     }
-
 
 
 }
 
-interface MapDelegate{
+interface MapDelegate {
     fun drawMarker(gp: LatLng, info: String)
 
 }

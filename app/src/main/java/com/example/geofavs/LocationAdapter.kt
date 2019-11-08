@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class LocationAdapter (private val listener: (Location) -> Unit): RecyclerView.Adapter<LocationAdapter.ViewHolder>(){
+class LocationAdapter: RecyclerView.Adapter<LocationAdapter.ViewHolder>(){
 
     private var locations = listOf<Location>()
 
@@ -31,10 +31,7 @@ class LocationAdapter (private val listener: (Location) -> Unit): RecyclerView.A
 
 
         fun bind(location: Location) {
-            locationTxt.text = location.longitude.toString() +  location.latitude.toString()
-
-
-        }
+            locationTxt.text = location.name }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {

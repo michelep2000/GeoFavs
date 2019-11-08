@@ -13,34 +13,33 @@ import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity(), MainDelegate {
+
     override fun renewList(list: List<Location>) {
+        print("-----------------$list-------------------")
         locationsAdapter.addLocation(list)
     }
 
+    lateinit var db: LocationDB
     lateinit var locationsAdapter: LocationAdapter
-    val db = LocationFactory.get(this)
+
     private lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        db = LocationFactory.get(this)
 //        val presenter = LocationPresenter(this)
 
         locationsRecyclerView.layoutManager = LinearLayoutManager(this)
         locationsRecyclerView.setHasFixedSize(true)
-        locationsAdapter = LocationAdapter {
-
-        }
+        locationsAdapter = LocationAdapter()
         locationsRecyclerView.adapter = locationsAdapter
         btnMaps.setOnClickListener {
-            val intent = Intent(this,MapsActivity::class.java)
+            val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
-        presenter = MainPresenter(db,this)
+        presenter = MainPresenter(db, this)
         presenter.getLocations()
-
-
 
 
     }

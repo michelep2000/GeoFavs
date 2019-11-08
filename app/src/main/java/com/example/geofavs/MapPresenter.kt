@@ -2,6 +2,7 @@ package com.example.geofavs
 
 import android.location.Address
 import android.location.Geocoder
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,7 @@ class MapPresenter( val db:LocationDB, val view: MapDelegate, val geocode: Geoco
 
     fun addGP(point: LatLng) {
         CoroutineScope(Dispatchers.IO).launch {
-            db.locationDao().insertLocation(Location(longitude = point.longitude,latitude = point.latitude))
+            db.locationDao().insertLocation(Location(name= getAddress(point),longitude = point.longitude,latitude = point.latitude))
             val address = getAddress(point)
             withContext(Dispatchers.Main){
                 view.drawMarker(point,address)
@@ -47,6 +48,7 @@ class MapPresenter( val db:LocationDB, val view: MapDelegate, val geocode: Geoco
         } catch (e: IOException) {
 
         }
+        Log.e("pasa",addressText)
 
         return addressText
     }

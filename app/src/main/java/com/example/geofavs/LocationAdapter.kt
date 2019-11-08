@@ -3,10 +3,9 @@ package com.example.geofavs
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import model.Location
+
 
 class LocationAdapter (private val listener: (Location) -> Unit): RecyclerView.Adapter<LocationAdapter.ViewHolder>(){
 
@@ -32,7 +31,7 @@ class LocationAdapter (private val listener: (Location) -> Unit): RecyclerView.A
 
 
         fun bind(location: Location) {
-            locationTxt.text = location.lon.toString()
+            locationTxt.text = location.longitude.toString() +  location.latitude.toString()
 
 
         }

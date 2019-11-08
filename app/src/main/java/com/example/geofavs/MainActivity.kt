@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import model.Location
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
 
         }
         locationsRecyclerView.adapter = locationsAdapter
+        btnMaps.setOnClickListener {
+            val intent = Intent(this,MapsActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }

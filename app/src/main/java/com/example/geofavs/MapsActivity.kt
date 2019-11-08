@@ -4,48 +4,54 @@ package com.example.geofavs
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback,MapDelegate {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
+    GoogleMap.OnInfoWindowLongClickListener, MapDelegate {
+    private lateinit var mMap: GoogleMap
+    private lateinit var presenter: MapPresenter
 
+    override fun onInfoWindowLongClick(p0: Marker) {
+        val point = p0.position
+        val name = p0.title
+
+
+    }
 
 
     override fun drawMarker(gp: LatLng, info: String) {
         val markerOptions = MarkerOptions().position(gp)
+        Log.e("pasa2",info)
+        markerOptions.title(info)
 
-          // add these two lines
 
 
 
-        mMap.addMarker(markerOptions)
+        mMap.addMarker(markerOptions).showInfoWindow()
     }
 
 
-    private lateinit var mMap: GoogleMap
-    private lateinit var presenter: MapPresenter
-    val geocoder = Geocoder(this)
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val geocoder = Geocoder(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         val db = LocationFactory.get(this)
-        val geocoder = Geocoder(this)
-        presenter = MapPresenter(db,this,geocoder)
+        presenter = MapPresenter(db, this, geocoder)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
     }
 
     /**
@@ -63,8 +69,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,MapDelegate {
             presenter.addGP(it)
 
 
-
         }
+        mMap.setOnInfoWindowLongClickListener(this)
 
 
     }

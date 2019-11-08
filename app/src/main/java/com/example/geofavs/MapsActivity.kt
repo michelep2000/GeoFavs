@@ -69,6 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap.setOnMapClickListener {
             var marker = MarkerOptions()
             marker.title(getAddress(it))
+            mMap.addMarker(marker)
 
 
 
